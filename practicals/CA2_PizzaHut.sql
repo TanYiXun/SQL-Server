@@ -1,0 +1,138 @@
+CREATE TABLE OrderStatus(
+	OrdStatusCd CHAR(4) PRIMARY KEY NOT NULL,
+	StatusDesc VARCHAR(100) NOT NULL
+)
+
+CREATE TABLE "Order"(
+	OrderNo CHAR(8) PRIMARY KEY NOT NULL,
+	OrderDate DATE NOT NULL,
+	OrderTime TIME NOT NULl,
+	DeliveryAddress VARCHAR(100) NOT NULL,
+	DeliveryTel  CHAR(8) NOT NULL,
+	DeliveryPostalCd CHAR(6) NOT NULL,
+	OrdStatusCd CHAR(4) NULL,
+	BranchNo CHAR(8) NULL,
+	Email VARCHAR(100) NULL,
+)
+--Order
+ALTER TABLE "Order" ADD FOREIGN KEY (OrdStatusCd) REFERENCES OrderStatus(OrdStatusCd) ON DELETE SET NULL
+ALTER TABLE "Order" ADD FOREIGN KEY (BranchNo) REFERENCES Branch(BranchNo) ON DELETE SET NULL
+ALTER TABLE "Order" ADD FOREIGN KEY (Email) REFERENCES Member(Email) ON DELETE SET NULL
+
+
+CREATE TABLE Branch(
+	BranchNo CHAR(8) PRIMARY KEY NOT NULL,
+	BranchName VARCHAR(100) NOT NULL,
+	Address VARCHAR(100) NOT NULL, 
+	Area_Code CHAR(4) NULL
+)
+--Branch
+ALTER TABLE Branch ADD FOREIGN KEY (Area_Code) REFERENCES Area(Area_Code)
+
+CREATE TABLE Area(
+	Area_Code CHAR(4) PRIMARY KEY NOT NULL,
+	Area_Desc VARCHAR(100) NOT NULL,
+)
+
+CREATE TABLE Member(
+	Email VARCHAR(100) PRIMARY KEY NOT NULL,
+	Password VARCHAR(100) NOT NULL,
+	Name VARCHAR(100) NOT NULL,
+	Addr1 VARCHAR(100) NOT NULL,
+	Addr2 VARCHAR(100) NULL,
+	Addr3 VARCHAR(100) NULL,
+	Addr4 VARCHAR(100) NULL,
+	PostCd CHAR(8) NOT NULL,
+	Contact CHAR(8) NOT NULL
+)
+
+CREATE TABLE Choice(
+	OrderNo CHAR(8) NOT NULL,
+	ItemNo CHAR(8) NOT NULL, 
+	PromoNo CHAR(8) NOT NULL,
+	Promo_order_Qt INTEGER NOT NULL,
+
+	PRIMARY KEY(OrderNo,ItemNo,PromoNo)
+)
+--Choice
+ALTER TABLE Choice ADD FOREIGN KEY (OrderNo) REFERENCES "Order"(OrderNo) 
+ALTER TABLE Choice ADD FOREIGN KEY (ItemNo) REFERENCES Item(ItemNo) 
+ALTER TABLE Choice ADD FOREIGN KEY (PromoNo) REFERENCES Promotion(PromoNo) 
+
+CREATE TABLE Promotion(
+	PromoNo CHAR(8) PRIMARY KEY NOT NULL,
+	PromoTitle VARCHAR(100) NOT NULL,
+	StartTime TIME NULL,
+	EndTime TIME NULL,
+	PromoPrice Decimal(20,2) NOT NULL,
+	StartDayOfWk VARCHAR(10) NULL,
+	EndDayOfWk VARCHAR(10) NULL,
+)
+
+CREATE TABLE PromoLine(
+	PromoLineNo CHAR(8) NOT NULL,
+	PromoNo CHAR(8) NOT NULL,
+	Size CHAR(1) NULL,
+	Promo_Qty INTEGER NOT NULL,
+	Type VARCHAR(100) NOT NULL,
+	PRIMARY KEY(PromoLineNo,PromoNo)
+)
+
+--PromoLine
+ALTER TABLE PromoLine ADD FOREIGN KEY (PromoNo) REFERENCES Promotion(PromoNo)
+
+CREATE TABLE PromoLineItem(
+	PromoLineNo CHAR(8) NOT NULL,
+	PromoNo CHAR(8) NOT NULL,
+	ItemNo CHAR(8) NOT NULL,
+	PRIMARY KEY (PromoLineNo,ItemNo,PromoNo)
+)
+--PromoLineItem
+ALTER TABLE PromoLineItem ADD FOREIGN KEY (PromoLineNo,PromoNo) REFERENCES PromoLine(PromoLineNo,PromoNo) 
+ALTER TABLE PromoLineItem ADD FOREIGN KEY (ItemNo) REFERENCES Item(ItemNo) 
+
+CREATE TABLE Item(
+	ItemNo CHAR(8) PRIMARY KEY NOT NULL,
+	ItemTitle VARCHAR(100) NOT NULL,
+	Description VARCHAR(1000) NOT NULL,
+	Type VARCHAR(100) NOT NULL,
+	nonPizzaPrice DECIMAL(20,2) NULL,
+)
+
+CREATE TABLE OrderItem(
+	OrderNo CHAR(8) NOT NULL,
+	ItemNo CHAR(8) NOT NULL,
+	CrustNo CHAR(8) NULL,
+	OrderQty INTEGER NOT NULL,
+	PizzaSize CHAR(1) NULL,
+
+	PRIMARY KEY (OrderNo,ItemNo)
+)
+--OrderItem
+ALTER TABLE OrderItem ADD FOREIGN KEY (OrderNo) REFERENCES "Order"(OrderNo)
+ALTER TABLE OrderItem ADD FOREIGN KEY (ItemNo) REFERENCES Item(ItemNo)
+
+CREATE TABLE PizzaPrice(
+	ItemNo CHAR(8) NOT NULL,
+	PizzaSize CHAR(1) NOT NULL,
+	CrustNo CHAR(8) NOT NULL,
+	PizzaPrice DECIMAL(20,2) NOT NULL,
+
+	PRIMARY KEY (ItemNo,PizzaSize,CrustNo)
+)
+--PizzaPrice
+ALTER TABLE PizzaPrice ADD FOREIGN KEY (ItemNo) REFERENCES Item(ItemNo) 
+ALTER TABLE PizzaPrice ADD FOREIGN KEY (PizzaSize) REFERENCES PizzaSize(PizzaSize) 
+ALTER TABLE PizzaPrice ADD FOREIGN KEY (CrustNo) REFERENCES PizzaCrust(CrustNo) 
+
+
+CREATE TABLE PizzaCrust(
+	CrustNo CHAR(8) PRIMARY KEY NOT NULL,
+	CrustDesc VARCHAR(100) NOT NULL
+)
+
+CREATE TABLE PizzaSize(
+	PizzaSize CHAR(1) PRIMARY KEY NOT NULL,
+	NoPersonServed INTEGER NOT NULL
+)
+

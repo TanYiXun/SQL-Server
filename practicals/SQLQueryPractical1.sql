@@ -1,0 +1,6 @@
+CREATE TABLE Staff_Relation (Staff_No	Char (4) NOT NULL,Staff_Name	Varchar(100)	Not Null,Supervisor	Char(4)	Null,Date_Of_Birth	Date	Not Null,Grade	VarChar(5)	Not Null,Marital_Status	Char(1)	Not Null,Pay	Decimal(7,2)	Null,Allowance	Decimal(7,2) 	Null,Hourly_Rate 	Decimal(7,2)	Null,Gender	Char(1) 	Not Null,Citizenship	Varchar(10)	Not Null,Join_Yr	Integer	Not Null,Dept_Cd	VarChar(5)	Not Null,Type_of_Employment	Char(2)	Not Null,Highest_Qln	Varchar(10)	Not Null,Designation	Varchar(20)	Not Null,PRIMARY KEY(Staff_No))
+SELECT * FROM Staff_Relation
+CREATE TABLE Course_Relation(Crse_Cd	VarChar(5)	Not Null,Crse_Name	VarChar(100)	Not Null,Offered_By	Varchar(5)	Not Null,Crse_Fee	Decimal(7,2)	Not Null,Lab_Fee	Decimal(7,2)	Null,PRIMARY KEY(Crse_Cd))
+SELECT * FROM Course_Relation
+CREATE TABLE Department_Relation(Dept_Cd	VarChar(5)	Not Null,Dept_Name	VarChar(100)	Not Null,HOD	Char(4)	Not Null,No_Of_Staff	Integer	Null,Max_Staff_Strength	Integer	Null,Budget	Decimal(9,2)	Null,PRIMARY KEY(Dept_Cd))
+SELECT * FROM Department_Relation

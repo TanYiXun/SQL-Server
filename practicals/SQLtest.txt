@@ -1,0 +1,17 @@
+CREATE TABLE test1 (AdmNo CHAR(4),Name VARCHAR(50)NOT NULL,PRIMARY KEY(AdmNo));
+
+SELECT * FROM test1;
+
+INSERT INTO test1 VALUES('1234','Alice Teo');
+
+INSERT INTO test1 VALUES('12345','Alice Teo');
+
+INSERT INTO test1 VALUES(NULL,'Alice Teo');
+
+INSERT INTO test1 VALUES('2222',NULL);
+
+INSERT INTO test1 VALUES('1111','Sam Tan');
+
+DELETE FROM test1 WHERE AdmNo = '1111';--Delete the tuple from the table
+
+DROP TABLE test1; --Delete the whole table
